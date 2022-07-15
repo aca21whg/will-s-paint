@@ -35,6 +35,9 @@ public class DrawingPanel extends JPanel {
     }
 	
 	private void draw(int drawX, int drawY) {
+		double penThickness = parentPanel.getPenSize()/2.0;
+		int minThick = (int)Math.floor(penThickness);
+		int maxThick = (int)Math.ceil(penThickness);
 		//gets the selected colours from the main panel RGB value for later use
 		int c = parentPanel.getSelectedColorType().getRGB();
 		//can't just use x and y values as the values need to change
@@ -42,7 +45,7 @@ public class DrawingPanel extends JPanel {
 		int usedX;
 		int usedY;
 		//loops through all the pixels around the cursor and colours them
-		for (int x = drawX - 5; x < drawX + 5; x++) {
+		for (int x = drawX - maxThick; x < drawX + minThick; x++) {
 			//if pixels out the area changes there value
 			if (x > drawZone.getWidth() - 1)
 				usedX = drawZone.getWidth() - 1;
@@ -50,7 +53,7 @@ public class DrawingPanel extends JPanel {
 				usedX = 0;
 			else
 				usedX = x;
-            for (int y = drawY - 5; y < drawY + 5; y++) {
+            for (int y = drawY - maxThick; y < drawY + minThick; y++) {
             	//if pixels out the area changes there value
             	if (y > drawZone.getHeight() - 1)
     				usedY = drawZone.getHeight() - 1;
