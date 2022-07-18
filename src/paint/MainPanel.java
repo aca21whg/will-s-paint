@@ -12,6 +12,8 @@ import java.awt.event.*;
 public class MainPanel extends JFrame{
 	
 	private ControlPanel controlPanel; 
+	
+	private SideControlPanel sideControlPanel;
 															
 	public MainPanel() {
 		//creates the panel
@@ -23,9 +25,12 @@ public class MainPanel extends JFrame{
 		DrawingPanel myDrawing = new DrawingPanel(this.getWidth(),this.getHeight() - 100, this);
 		//creates control panel
 		controlPanel = new ControlPanel();
+		//creates sideControlPanel
+		sideControlPanel = new SideControlPanel();
 		//adds the panels in the desired layout
 		this.setLayout(new BorderLayout());
 		this.add(controlPanel, BorderLayout.NORTH);
+		this.add(sideControlPanel, BorderLayout.WEST);
 		this.add(myDrawing, BorderLayout.CENTER);	
 		
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -35,11 +40,17 @@ public class MainPanel extends JFrame{
 	}
 	
 	public Color getSelectedColorType() {
+		if (getTool().equals("eraser"))
+			return(Color.white);
 		return controlPanel.getSelectedColorType();
 	}
 	
 	public int getPenSize() {
 		return controlPanel.getPenSize();
+	}
+	
+	public String getTool() {
+		return sideControlPanel.getSelectedTool();
 	}
 	
 	public static void main(String[] args) {

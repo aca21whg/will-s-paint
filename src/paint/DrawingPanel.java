@@ -1,10 +1,12 @@
 package paint;
 
+import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import javax.swing.*;
 import java.awt.event.*;
+import java.awt.geom.*;
 import java.awt.image.BufferedImage;
 
 public class DrawingPanel extends JPanel {
@@ -12,6 +14,9 @@ public class DrawingPanel extends JPanel {
 	private BufferedImage drawZone;
 	//stores the MainPanel this drawing panel is used to allow the use of button values
 	private MainPanel parentPanel;
+	//integer arrays used to store mouse coords for certain drawing tools
+	private int[] startCoord = new int[2];
+	private int[] endCoord = new int[2];
 	
 	public DrawingPanel(int w, int h, MainPanel main){
 		//saves MainPanel object
@@ -19,9 +24,9 @@ public class DrawingPanel extends JPanel {
 		//makes it white
 		setBackground(Color.white);
 		//makes the size slightly smaller than the main panel to leave room for the control panel
-		setSize(900, 600);
+		setSize(800, 600);
 		//makes the buffered image
-		drawZone = new BufferedImage(w , h, BufferedImage.TYPE_INT_ARGB);	
+		drawZone = new BufferedImage(800 , 600, BufferedImage.TYPE_INT_ARGB);	
 		//adds listeners
 		addMouseListener(new mouseStationary());
 		addMouseMotionListener(new mouseInMotion());
@@ -68,14 +73,49 @@ public class DrawingPanel extends JPanel {
 		//redraws the panel so we can see the new look
 		 repaint();
 	}
+	
+	private void drawRectangle(Graphics2D zone) {
+		int rectWidth = Math.abs(startCoord[0] - endCoord[0]);
+		int rectHeight = Math.abs(startCoord[1] - endCoord[1]);
+		zone.draw(new Rectangle2D.Double(startCoord[0], startCoord[1],
+				rectWidth,
+                rectHeight));
+	}
+		
+	private void drawCircle(Graphics2D zone) {
+		int rectWidth = Math.abs(startCoord[0] - endCoord[0]);
+		int rectHeight = Math.abs(startCoord[1] - endCoord[1]);
+		zone.draw(new Ellipse2D.Double(startCoord[0], startCoord[1],
+				rectWidth,
+                rectHeight));
+	}
+	
+	private void drawShape() {
+		Graphics2D graphicsZone = drawZone.createGraphics();
+		graphicsZone.setColor(parentPanel.getSelectedColorType());
+		graphicsZone.setStroke(new BasicStroke(parentPanel.getPenSize()));
+		if (parentPanel.getTool().equals("rectangle"))
+			drawRectangle(graphicsZone);
+		else if (parentPanel.getTool().equals("line"))
+			graphicsZone.draw(new Line2D.Double(startCoord[0], startCoord[1], endCoord[0], endCoord[1]));
+		else if (parentPanel.getTool().equals("circle"))
+			drawCircle(graphicsZone);
+		repaint();
+	}
+	
 	private class mouseStationary implements MouseListener{
 	
 		public void mousePressed(MouseEvent e) {
-
+			//save the starting coords on first click
+			startCoord[0] = e.getX();
+			startCoord[1] = e.getY();
 	    	}
 	     
 		public void mouseReleased(MouseEvent e) {
-		 
+			//save end coords when the mouse is released
+			endCoord[0] = e.getX();
+			endCoord[1] = e.getY();
+			drawShape();
 	   		}
 	     
 		public void mouseEntered(MouseEvent e) {
@@ -87,13 +127,17 @@ public class DrawingPanel extends JPanel {
 	    	}
 	     
 		public void mouseClicked(MouseEvent e) {
-			draw(e.getX(),e.getY());
+			//only runs the function when specific tools are selected
+			if (parentPanel.getTool().equals("drawing") || parentPanel.getTool().equals("eraser"))
+				draw(e.getX(),e.getY());
 			}
 	}
 	private class mouseInMotion implements MouseMotionListener{
 		
 	 public void mouseDragged(MouseEvent e) {
-		 draw(e.getX(),e.getY());
+		//only runs the function when specific tools are selected
+		 if (parentPanel.getTool().equals("drawing") || parentPanel.getTool().equals("eraser"))
+			draw(e.getX(),e.getY());
 	 	}
 	
 	public void mouseMoved(MouseEvent e) {
