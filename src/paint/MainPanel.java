@@ -18,11 +18,11 @@ public class MainPanel extends JFrame{
 	public MainPanel() {
 		//creates the panel
 		setTitle("A Simple Frame");
-		setSize(900, 700);
+		setSize(950, 700);
 		//sets the panel as a container for other panels
 		Container contentPane = this.getContentPane();
 		//creates the drawing panel
-		DrawingPanel myDrawing = new DrawingPanel(this.getWidth(),this.getHeight() - 100, this);
+		DrawingPanel2 myDrawing = new DrawingPanel2(this.getWidth(),this.getHeight() - 100, this);
 		//creates control panel
 		controlPanel = new ControlPanel();
 		//creates sideControlPanel

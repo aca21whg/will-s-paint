@@ -4,10 +4,13 @@ import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+import java.awt.Shape;
+
 import javax.swing.*;
 import java.awt.event.*;
 import java.awt.geom.*;
 import java.awt.image.BufferedImage;
+import java.util.ArrayList;
 
 public class DrawingPanel extends JPanel {
 	//creates a buffered image to draw on
@@ -17,6 +20,10 @@ public class DrawingPanel extends JPanel {
 	//integer arrays used to store mouse coords for certain drawing tools
 	private int[] startCoord = new int[2];
 	private int[] endCoord = new int[2];
+	//used if we want to know where the mouse is right now outside an event
+	private int[] curCoord = new int[2];
+	
+	private ArrayList<Shape> drawnObjects;
 	
 	public DrawingPanel(int w, int h, MainPanel main){
 		//saves MainPanel object
@@ -141,7 +148,8 @@ public class DrawingPanel extends JPanel {
 	 	}
 	
 	public void mouseMoved(MouseEvent e) {
-		
+		curCoord[0] = e.getX();
+		curCoord[1] = e.getY();
 	 	}
 	}
 }

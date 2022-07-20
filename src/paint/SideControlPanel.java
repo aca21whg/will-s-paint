@@ -6,6 +6,7 @@ import java.text.NumberFormat;
 
 import javax.swing.BoxLayout;
 import javax.swing.ButtonGroup;
+import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JRadioButton;
@@ -18,17 +19,23 @@ public class SideControlPanel extends JPanel{
 	
 	public SideControlPanel() {
 		JPanel sideControlPanel = new JPanel();
-		setSize(100,700);
+		setSize(150,700);
 		setBackground(Color.lightGray);
+		//loads images for the buttons icons
+		ImageIcon rectangle = new ImageIcon(getClass().getResource("images/rectangle.png"));
+		ImageIcon circle = new ImageIcon(getClass().getResource("images/circle.png"));
+		ImageIcon line = new ImageIcon(getClass().getResource("images/line.png"));
+		ImageIcon eraser = new ImageIcon(getClass().getResource("images/eraser.png"));
+		ImageIcon pen = new ImageIcon(getClass().getResource("images/pen.png"));
 		
 		tools = new ButtonGroup();
 		//creates an array of JRadioButtons for easier use
 		toolButtons = new JRadioButton[5];
-		toolButtons[0] = new JRadioButton("drawing");
-		toolButtons[1] = new JRadioButton("eraser");
-		toolButtons[2] = new JRadioButton("rectangle");
-		toolButtons[3] = new JRadioButton("line");
-		toolButtons[4] = new JRadioButton("circle");
+		toolButtons[0] = new JRadioButton("drawing",pen);
+		toolButtons[1] = new JRadioButton("eraser",eraser);
+		toolButtons[2] = new JRadioButton("rectangle", rectangle);
+		toolButtons[3] = new JRadioButton("line",line);
+		toolButtons[4] = new JRadioButton("circle",circle);
 		
 		sideControlPanel.setLayout(new BoxLayout(sideControlPanel, BoxLayout.Y_AXIS));
 		for (int i = 0; i < 5; i++) {
