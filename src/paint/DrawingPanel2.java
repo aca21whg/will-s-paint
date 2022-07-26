@@ -137,21 +137,94 @@ public class DrawingPanel2 extends JPanel {
 			int rectWidth = Math.abs(startCoord[0] - curCoord[0]);
 			int rectHeight = Math.abs(startCoord[1] - curCoord[1]);
 			((Rectangle2D.Double) drawnObjects.get(drawnObjects.size()-1))
-				.setRect(startCoord[0],endCoord[1],rectWidth,rectHeight);
+				.setRect(startCoord[0],startCoord[1],rectWidth,rectHeight);
 			reDraw();
 		}
 		else if (parentPanel.getTool().equals("line")) {
 			((Line2D.Double) drawnObjects.get(drawnObjects.size()-1))
-				.setLine(startCoord[0],endCoord[1],curCoord[0],curCoord[1]);
+				.setLine(startCoord[0],startCoord[1],curCoord[0],curCoord[1]);
 			reDraw();
 		}
 		else if (parentPanel.getTool().equals("circle")) {
 			int ellipseWidth = Math.abs(startCoord[0] - curCoord[0]);
 			int ellipseHeight = Math.abs(startCoord[1] - curCoord[1]);
 			((Ellipse2D.Double) drawnObjects.get(drawnObjects.size()-1))
-				.setFrame(startCoord[0],endCoord[1],ellipseWidth,ellipseHeight);
+				.setFrame(startCoord[0],startCoord[1],ellipseWidth,ellipseHeight);
 			reDraw();
 		}
+	}
+	
+	//giga bugged
+	private void fillTool() {
+		//sets up the colours we need to change and what to change them to
+		int startRGB = drawZone.getRGB(startCoord[0],startCoord[1]);
+		int fillColour = parentPanel.getSelectedColorType().getRGB();
+		//runs a recursive function on the left and right of the pixel
+		xPositive(startCoord[0],startCoord[1],fillColour,startRGB);
+		xNegative(startCoord[0] - 1,startCoord[1],fillColour,startRGB);
+		repaint();
+		
+	}
+	//@authors Will and Elvis
+	private void xPositive(int x, int y, int fillColour,int startRGB) {
+		//sets the current pixel to the correct colour
+		drawZone.setRGB(x, y, fillColour);
+		rasterGrid[x][y] = fillColour;
+		//runs two recursive function above and bellow the pixel
+		if (y < drawZone.getHeight() - 1)
+			if (drawZone.getRGB(x, y + 1) == startRGB)
+				yPositive(x,y,fillColour,startRGB);
+		
+		if (y > 0)
+			if (drawZone.getRGB(x , y - 1) == startRGB)
+				yNegative(x, y - 1, fillColour, startRGB);
+		//calls this function again but on the pixel to the right if
+		//the conditions for the call are correct
+		if (x < drawZone.getWidth() - 1)
+			if (drawZone.getRGB(x + 1, y) == startRGB)
+				xPositive(x + 1, y, fillColour, startRGB);
+	}
+	
+	private void xNegative(int x, int y, int fillColour,int startRGB) {
+		//sets current pixel to the correct pixel
+		drawZone.setRGB(x, y, fillColour);
+		rasterGrid[x][y] = fillColour;
+		//runs two recursive function above and bellow the pixel
+		if (y < drawZone.getHeight() - 1)
+			if (drawZone.getRGB(x, y + 1) == startRGB)
+				yPositive(x,y,fillColour,startRGB);
+		
+		if (y > 0)
+			if (drawZone.getRGB(x , y - 1) == startRGB)
+				yNegative(x, y - 1, fillColour, startRGB);
+		//calls this function again but on the pixel to the right if
+		//the conditions for the call are correct
+		if (x > 0)
+			if (drawZone.getRGB(x - 1, y) == startRGB)
+				xNegative(x - 1, y, fillColour, startRGB);
+	}
+	
+	private void yPositive(int x, int y, int fillColour,int startRGB) {
+		//sets current pixel to the correct pixel
+		drawZone.setRGB(x, y, fillColour);
+		rasterGrid[x][y] = fillColour;
+		//calls this function again but on the pixel to the right if
+		//the conditions for the call are correct
+		if (y < drawZone.getHeight() - 1)
+			if (drawZone.getRGB(x, y + 1) == startRGB)
+				yPositive(x, y + 1, fillColour, startRGB);
+		
+	}
+	
+	private void yNegative(int x, int y, int fillColour,int startRGB) {
+		//sets current pixel to the correct pixel
+		drawZone.setRGB(x, y, fillColour);
+		rasterGrid[x][y] = fillColour;
+		//calls this function again but on the pixel to the right if
+		//the conditions for the call are correct
+		if (y > 0)
+			if (drawZone.getRGB(x , y - 1) == startRGB)
+				yNegative(x, y - 1, fillColour, startRGB);
 	}
 	
 	private class mouseStationary implements MouseListener{
@@ -187,6 +260,8 @@ public class DrawingPanel2 extends JPanel {
 			startCoord[1] = e.getY();
 			if (parentPanel.getTool().equals("drawing") || parentPanel.getTool().equals("eraser"))
 				draw(e.getX(),e.getY());
+			else if (parentPanel.getTool().equals("fill"))
+				fillTool();
 			else 
 				createShape();
 			}
@@ -204,9 +279,6 @@ public class DrawingPanel2 extends JPanel {
 	 	}
 	
 	public void mouseMoved(MouseEvent e) {
-
-		//if (mousePressed)
-			//editShape();
 	 	}
 	}
 }
