@@ -37,12 +37,12 @@ public class DrawingPanel2 extends JPanel {
 		//makes it white
 		setBackground(Color.white);
 		//makes the size slightly smaller than the main panel to leave room for the control panel
-		setSize(800, 600);
+		setSize(w, h);
 		//makes the buffered image
-		drawZone = new BufferedImage(800 , 600, BufferedImage.TYPE_INT_ARGB);	
+		drawZone = new BufferedImage(w , h, BufferedImage.TYPE_INT_ARGB);	
 		//set up raster grid array
 		int whiteCode = Color.white.getRGB();
-		rasterGrid = new int[800][600];
+		rasterGrid = new int[w][h];
 		for (int x = 0; x < rasterGrid.length; x++)
 			for (int y = 0; y < rasterGrid[x].length; y++)
 				rasterGrid[x][y] = whiteCode;
