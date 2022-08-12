@@ -21,7 +21,7 @@ public class ControlPanel extends JPanel{
 	
 	private JSpinner penSize;
 		
-	public ControlPanel() {
+	public ControlPanel(DrawingPanel2 drawing) {
 		JPanel controlPanel = new JPanel();
 		setSize(900,100);
 		setBackground(Color.lightGray);
@@ -52,6 +52,9 @@ public class ControlPanel extends JPanel{
 			colourChoice.add(colours[i]);
 			controlPanel.add(colours[i]);
 		}
+		FileChooser fileChooser = new FileChooser(drawing);
+		controlPanel.add(fileChooser.getOpen());
+		controlPanel.add(fileChooser.getSave());
 		this.add(controlPanel);
 	}
 	

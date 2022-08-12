@@ -281,4 +281,7 @@ public class DrawingPanel2 extends JPanel {
 	public void mouseMoved(MouseEvent e) {
 	 	}
 	}
+	public BufferedImage getImage() {
+		return drawZone;
+	}
 }

@@ -31,7 +31,7 @@ public class MainPanel extends JFrame{
 		//creates the drawing panel
 		DrawingPanel2 myDrawing = new DrawingPanel2(drawingSizeX,drawingSizeY, this);
 		//creates control panel
-		controlPanel = new ControlPanel();
+		controlPanel = new ControlPanel(myDrawing);
 		//creates sideControlPanel
 		sideControlPanel = new SideControlPanel();
 		//adds the panels in the desired layout
