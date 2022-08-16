@@ -61,11 +61,13 @@ public class MainPanel extends JFrame{
             	sizeInputPanel.setVisible(false);  
             }  
         });  
+        //sets up the starting panel so people now what input affects what
         sizeInputPanel.add( new JLabel ("drawing width:"));
         sizeInputPanel.add(pictureSizeX);
+        
         sizeInputPanel.add( new JLabel ("drwaing height:"));
         sizeInputPanel.add(pictureSizeY); 
-        sizeInputPanel.add(b); 
+   
         sizeInputPanel.add( new JLabel ("Click button to continue.")); 
         sizeInputPanel.add(b);   
         sizeInputPanel.setSize(300,300);    

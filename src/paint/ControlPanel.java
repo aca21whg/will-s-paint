@@ -52,9 +52,11 @@ public class ControlPanel extends JPanel{
 			colourChoice.add(colours[i]);
 			controlPanel.add(colours[i]);
 		}
+		//creates a file chooser object and adds its buttons to the panel
 		FileChooser fileChooser = new FileChooser(drawing);
 		controlPanel.add(fileChooser.getOpen());
 		controlPanel.add(fileChooser.getSave());
+		
 		this.add(controlPanel);
 	}
 	

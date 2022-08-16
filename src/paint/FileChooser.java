@@ -5,6 +5,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.image.BufferedImage;
 import java.io.File;
+import java.io.FileFilter;
 import java.io.IOException;
 
 import javax.imageio.ImageIO;
@@ -28,8 +29,10 @@ public class FileChooser  extends JPanel
 		image = drawing.getImage();
 		
 		fileChooser = new JFileChooser();
-		
+		//sets up file chooser to allow a proper file viewing experience
 		fileChooser.setFileSelectionMode(JFileChooser.FILES_AND_DIRECTORIES);
+		fileChooser.addChoosableFileFilter(new PNGFilter());
+		fileChooser.addChoosableFileFilter(new JPEGFilter());
 		
 		open = new JButton("Open");
 		open.addActionListener(this);
@@ -57,16 +60,17 @@ public class FileChooser  extends JPanel
 		          
 			if (returnVal == JFileChooser.APPROVE_OPTION) {     
 				File file = fileChooser.getSelectedFile();    
-				//uses image io to save the image as a png   
-		        try { 
-		        	if (ImageIO.write(image, "png", new File(file.getPath() + ".PNG"))) 
-		        		System.out.println("-- saved"); 
-		        } catch (IOException e) {
+				//uses image io to save the image as a png 
+				System.out.println(fileChooser.getFileFilter().toString());
+		        	try { 
+		        		if (ImageIO.write(image, "png", new File(file.getPath() + ".PNG"))) 
+		        			System.out.println("-- saved png"); 
+		        	} catch (IOException e) {
 		                    e.printStackTrace();
-		            }}
-		            
-		        }
-		    }
+		        	}}
+			}
+	}
+		   
 		public JButton getOpen() {
 			return open;
 		}
